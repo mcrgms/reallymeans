@@ -1541,7 +1541,7 @@ async function submitPopupEmail() {
   btn.disabled = true;
   try {
     const formData = new FormData();
-    formData.append('auth_token', '58d27169e10f488196ed2dca46ea50a9');
+    formData.append('auth_token', 'YOUR_AUTH_TOKEN');
     formData.append('list_id', '1280626');
     formData.append('email', email);
     await fetch('https://acumbamail.com/api/1/addSubscriber/', {
@@ -1570,7 +1570,7 @@ async function submitPopupEmail() {
 
   try {
     const formData = new FormData();
-    formData.append('auth_token', 'YOUR_AUTH_TOKEN');
+    formData.append('auth_token', '58d27169e10f488196ed2dca46ea50a9');
     formData.append('list_id', '1280626');
     formData.append('email', email);
 
