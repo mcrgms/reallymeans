@@ -1540,13 +1540,14 @@ async function submitPopupEmail() {
   btn.textContent = '...';
   btn.disabled = true;
   try {
-    const formData = new FormData();
-    formData.append('auth_token', '58d27169e10f488196ed2dca46ea50a9');
-    formData.append('list_id', '1280626');
-    formData.append('email', email);
-    await fetch('https://acumbamail.com/api/1/addSubscriber/', {
+    await fetch('https://acumba-proxy.mtt-orlandi.workers.dev', {
       method: 'POST',
-      body: formData
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        auth_token: '58d27169e10f488196ed2dca46ea50a9',
+        list_id: '1280626'
+      })
     });
     document.getElementById('popup-email-success').classList.add('visible');
     document.getElementById('popup-email-input').style.display = 'none';
@@ -1565,22 +1566,19 @@ async function submitEmail() {
     showToast('Enter a valid email address');
     return;
   }
-
-  const btn = document.querySelector('.email-submit');
+  const btn = document.querySelector('.email-capture .email-submit');
   btn.textContent = '...';
   btn.disabled = true;
-
   try {
-    const formData = new FormData();
-    formData.append('auth_token', '58d27169e10f488196ed2dca46ea50a9');
-    formData.append('list_id', '1280626');
-    formData.append('email', email);
-
-    const response = await fetch('https://acumbamail.com/api/1/addSubscriber/', {
+    await fetch('https://acumba-proxy.mtt-orlandi.workers.dev', {
       method: 'POST',
-      body: formData
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        auth_token: '58d27169e10f488196ed2dca46ea50a9',
+        list_id: '1280626'
+      })
     });
-
     document.getElementById('email-success').classList.add('visible');
     document.getElementById('email-input').style.display = 'none';
     btn.style.display = 'none';
