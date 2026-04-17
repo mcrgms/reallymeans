@@ -45,6 +45,44 @@
     overflow-x: hidden;
   }
 
+  /* NOTIFY POPUP */
+  .notify-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,10,0.7);
+    z-index: 9000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  .notify-overlay.open { display: flex; }
+  .notify-modal {
+    background: var(--black);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 36px 32px;
+    width: 90%;
+    max-width: 480px;
+    position: relative;
+  }
+  .notify-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.4);
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .notify-close:hover { color: white; }
+  .notify-modal .email-capture-label { display: block; margin-bottom: 8px; }
+  .notify-modal .email-capture-title { margin-bottom: 4px; }
+  .notify-modal .email-capture-sub { margin-bottom: 20px; }
+  .notify-modal .email-capture-row { display: flex; gap: 8px; }
+
   /* ANNOUNCEMENT BAR */
   .announcement-bar {
     background: var(--red-dark);
@@ -791,7 +829,22 @@
 <!-- ANNOUNCEMENT BAR -->
 <div class="announcement-bar">
   <p><strong>DECODED UNFILTERED</strong> IS COMING — any language · any industry · no compromises</p>
-  <a href="#email-capture" onclick="document.getElementById('phrase-input').focus()">→ Notify me</a>
+  <a href="#" onclick="openNotifyPopup(); event.preventDefault();">→ Notify me</a>
+</div>
+
+<!-- NOTIFY POPUP -->
+<div class="notify-overlay" id="notify-overlay" onclick="if(event.target===this)closeNotifyPopup()">
+  <div class="notify-modal">
+    <button class="notify-close" onclick="closeNotifyPopup()">✕</button>
+    <div class="email-capture-label">Coming soon</div>
+    <div class="email-capture-title">DECODED Unfiltered</div>
+    <div class="email-capture-sub">Any language, any industry, no compromises.</div>
+    <div class="email-capture-row">
+      <input type="email" class="email-input" id="popup-email-input" placeholder="your@email.com">
+      <button class="email-submit" onclick="submitPopupEmail()">NOTIFY ME</button>
+    </div>
+    <div class="email-success" id="popup-email-success">✓ You're on the list. We'll be in touch.</div>
+  </div>
 </div>
 
 <!-- TICKER -->
@@ -1468,7 +1521,43 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-async function submitEmail() {
+function openNotifyPopup() {
+  document.getElementById('notify-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('popup-email-input').focus(), 100);
+}
+
+function closeNotifyPopup() {
+  document.getElementById('notify-overlay').classList.remove('open');
+}
+
+async function submitPopupEmail() {
+  const email = document.getElementById('popup-email-input').value.trim();
+  if (!email || !email.includes('@')) {
+    showToast('Enter a valid email address');
+    return;
+  }
+  const btn = document.querySelector('.notify-modal .email-submit');
+  btn.textContent = '...';
+  btn.disabled = true;
+  try {
+    const formData = new FormData();
+    formData.append('auth_token', '58d27169e10f488196ed2dca46ea50a9');
+    formData.append('list_id', '1280626');
+    formData.append('email', email);
+    await fetch('https://acumbamail.com/api/1/addSubscriber/', {
+      method: 'POST',
+      body: formData
+    });
+    document.getElementById('popup-email-success').classList.add('visible');
+    document.getElementById('popup-email-input').style.display = 'none';
+    btn.style.display = 'none';
+    setTimeout(() => closeNotifyPopup(), 2500);
+  } catch(e) {
+    showToast('Something went wrong. Try again.');
+    btn.textContent = 'NOTIFY ME';
+    btn.disabled = false;
+  }
+}
   const email = document.getElementById('email-input').value.trim();
   if (!email || !email.includes('@')) {
     showToast('Enter a valid email address');
@@ -1481,7 +1570,7 @@ async function submitEmail() {
 
   try {
     const formData = new FormData();
-    formData.append('auth_token', '58d27169e10f488196ed2dca46ea50a9');
+    formData.append('auth_token', 'YOUR_AUTH_TOKEN');
     formData.append('list_id', '1280626');
     formData.append('email', email);
 
