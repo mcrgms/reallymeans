@@ -839,10 +839,17 @@
     <div class="email-capture-label">Coming soon</div>
     <div class="email-capture-title">DECODED Unfiltered</div>
     <div class="email-capture-sub">Any language, any industry, no compromises.</div>
-    <div class="email-capture-row">
-      <input type="email" class="email-input" id="popup-email-input" placeholder="your@email.com">
-      <button class="email-submit" onclick="submitPopupEmail()">NOTIFY ME</button>
-    </div>
+    <form action="https://acumbamail.com/newform/subscribe/Dfx1iSqfiyvdqtpgB2xYAn6UoVULAVPjP3lOaVn4iJ3brfxUto5q/62309/?iframe=1" target="acm_result_62309" method="post" onsubmit="handleNotifySubmit()">
+      <div class="email-capture-row">
+        <input id="id_orxgf4" name="email_1" type="email" placeholder="your@email.com" required autocomplete="email" class="email-input">
+        <button type="submit" class="email-submit">NOTIFY ME</button>
+      </div>
+      <input type="text" name="a1280626c" tabindex="-1" value="" style="position:absolute;left:-4900px;" aria-hidden="true" id="a1280626c" autocomplete="off"/>
+      <input type="email" name="b1280626c" tabindex="-1" value="" style="position:absolute;left:-5000px;" aria-hidden="true" id="b1280626c" autocomplete="off"/>
+      <input type="checkbox" name="c1280626c" tabindex="-1" style="position:absolute;left:-5100px;" aria-hidden="true" id="c1280626c" autocomplete="off"/>
+      <input type="hidden" name="ok_redirect" value="">
+      <iframe name="acm_result_62309" id="acm_result_62309" title="Subscription result" style="display:none" loading="lazy"></iframe>
+    </form>
     <div class="email-success" id="popup-email-success">✓ You're on the list. We'll be in touch.</div>
   </div>
 </div>
@@ -1521,6 +1528,14 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
+function handleNotifySubmit() {
+  setTimeout(() => {
+    document.getElementById('popup-email-success').classList.add('visible');
+    document.querySelector('.notify-modal form').style.display = 'none';
+    setTimeout(() => closeNotifyPopup(), 2500);
+  }, 800);
+}
+
 function openNotifyPopup() {
   document.getElementById('notify-overlay').classList.add('open');
   setTimeout(() => document.getElementById('popup-email-input').focus(), 100);
@@ -1545,7 +1560,7 @@ async function submitPopupEmail() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: email,
-        auth_token: '58d27169e10f488196ed2dca46ea50a9',
+        auth_token: 'YOUR_AUTH_TOKEN',
         list_id: '1280626'
       })
     });
@@ -1575,7 +1590,7 @@ async function submitEmail() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: email,
-        auth_token: '58d27169e10f488196ed2dca46ea50a9',
+        auth_token: 'YOUR_AUTH_TOKEN',
         list_id: '1280626'
       })
     });
