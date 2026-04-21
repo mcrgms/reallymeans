@@ -895,6 +895,7 @@
       <div class="result-actions">
         <button class="action-btn primary" onclick="shareAsImage()"><span>Share as Image</span></button>
         <button class="action-btn" onclick="copyToClipboard()">Copy Translation</button>
+        <button class="action-btn" onclick="copyLink()">Copy Link</button>
         <button class="action-btn" onclick="shareTwitter()">Post on X</button>
         <button class="action-btn" onclick="tryAnother()">Try Another</button>
       </div>
@@ -1213,10 +1214,17 @@ function copyToClipboard() {
   navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!'));
 }
 
+function copyLink() {
+  if (!currentResult) return;
+  const url = `https://reallymeans.com/?id=${currentResult.id}`;
+  navigator.clipboard.writeText(url).then(() => showToast('Link copied! Share it anywhere.'));
+}
+
 function shareTwitter() {
   if (!currentResult) return;
-  const text = encodeURIComponent(`They said: "${currentResult.phrase.substring(0, 60)}..."\n\nWhat it REALLY means? Find out at reallymeans.com 🔍 #DECODED`);
-  window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+  const url = encodeURIComponent(`https://reallymeans.com/?id=${currentResult.id}`);
+  const text = encodeURIComponent(`They said: "${currentResult.phrase.substring(0, 60)}..."\n\nWhat it REALLY means? 🔍 #DECODED`);
+  window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
 }
 
 async function shareAsImage() {
