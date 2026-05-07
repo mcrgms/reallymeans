@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /?id=*
 
 Sitemap: https://reallymeans.com/sitemap.xml
